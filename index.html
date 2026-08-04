@@ -1,0 +1,183 @@
+<p>&nbsp;</p>
+<p></p>
+<nav>
+<div class="wrap"><span class="brand">FRASER KEARSEY</span> <span class="docref">DOC: FK-PORTFOLIO &middot; REV 2026-08</span>
+<div class="navlinks"><a href="#pipeline">pipeline</a> <a href="#problems">problems</a> <a href="#status">status</a> <a href="#contact">contact</a></div>
+</div>
+</nav><header class="intro">
+<div class="wrap">
+<h1>Imitation learning on an SO-101 arm</h1>
+<div class="lede">
+<p>This page details my foray into imitation learning and ACT. I printed and built a pair of SO-101 robot arms, recorded demonstrations of a pick-and-place task, trained an ACT policy on them, and got it to robotic arm to complete the task 'autonomously'. It works, as long as everything is where it was during training.</p>
+<p>This is the write-up. It includes the things that didn't work, because those took most of the time.</p>
+</div>
+</div>
+</header>
+<section>
+<div class="wrap">
+<p class="secnum">1.0 &nbsp; TASK</p>
+<h2>Cube into a box</h2>
+<p>My aim was for the arm to pick up a green cube and put it in a box.&nbsp; What I wanted to do was to go through every stage of a robot learning pipeline on real hardware: record demonstrations, build a dataset, train a policy, run it on the arm. Most of what I learned came from the joins between those stages rather than the stages themselves.</p>
+<p>I started with a pencil sharpener. The policy kept stalling just short of the grasp, so I switched to a cube, which I thought would be easier to identify and could be gripped more easily. I wanted one thing working end to end before making it harder. Eventually I'd like to get to something useful, like unloading a dishwasher (although I now appreciate this likely a very difficult problem that lots of embodied AI companies are trying to solve..).</p>
+<div class="placeholder">FIG. 1 &mdash; VIDEO: THE POLICY COMPLETING THE TASK <small>Replace this block with the successful run. One continuous take, cube placed to policy started to cube in box, 30&ndash;60 seconds. This is the most valuable thing on the page. <br />&lt;video controls src="so101-pickplace.mp4"&gt;&lt;/video&gt;</small></div>
+<p>The hardware setup is a leader&ndash;follower pair of SO-101 arms. I printed the parts for both and assembled them myself. To record a demonstration I move the leader by hand and the follower copies it, while two cameras (one on the follower's wrist, one overhead) record what it sees along with its joint positions.</p>
+<p>The overhead camera used to sit on a stand in front of the arm. After getting poor performance from the first set of data / training I decided an overhead view would produce a more varied output, resulting in a better trained model and inference. Moving it meant re-recording a new dataset.</p>
+<div class="placeholder">FIG. 2 &mdash; PHOTO: THE BENCH SETUP <small>One wide shot with both arms, both cameras, the cube and the box in frame. Labelling the cameras makes the data-collection story readable at a glance.</small></div>
+<div class="datastrip">
+<div><span class="k">Robot</span><br /><span class="v">SO-101, 6 DOF</span></div>
+<div><span class="k">Policy</span><br /><span class="v">ACT</span></div>
+<div><span class="k">Demos</span><br /><span class="v">50 episodes</span></div>
+<div><span class="k">Cameras</span><br /><span class="v">overhead + wrist</span></div>
+<div><span class="k">Framework</span><br /><span class="v">LeRobot</span></div>
+</div>
+</div>
+</section>
+<section id="pipeline">
+<div class="wrap">
+<p class="secnum">2.0 &nbsp; PIPELINE</p>
+<h2>From demonstrations to deployment</h2>
+<div class="pipeline">
+<div class="stage"><span class="num">STAGE 1</span>
+<h4>Teleoperated demos</h4>
+<p>50 episodes recorded through the leader arm. Two camera streams at 640&times;480, 30fps, plus joint states.</p>
+</div>
+<div class="stage"><span class="num">STAGE 2</span>
+<h4>Dataset</h4>
+<p>Episodes packaged in LeRobot's dataset format and pushed to Hugging Face, so I can train from anywhere.</p>
+</div>
+<div class="stage"><span class="num">STAGE 3</span>
+<h4>Train ACT</h4>
+<p>Action Chunking with Transformers, 20&ndash;25k steps on a rented GPU (RunPod), checkpointed to the Hub.</p>
+</div>
+<div class="stage"><span class="num">STAGE 4</span>
+<h4>Deploy</h4>
+<p>Policy runs against the real arm. Local CPU inference is what I use; async and remote GPU were both tried.</p>
+</div>
+</div>
+<p class="soft">ACT is the usual starting point for a low-cost arm. Instead of predicting one action at a time it predicts a <em>chunk</em> of future actions from the camera images and joint states, which smooths out the inconsistency in human demonstrations. It's well supported in LeRobot and trains in a couple of hours on a cheap rented GPU, which suits a 50-episode dataset.</p>
+</div>
+</section>
+<section id="problems">
+<div class="wrap">
+<p class="secnum">3.0 &nbsp; PROBLEMS</p>
+<h2>Two problems worth writing down</h2>
+<p class="soft">These took the longest to work out.</p>
+<div class="problem">
+<div class="p-head"><span class="p-label">3.1 &mdash; CONTROL RATE</span></div>
+<div class="p-body">
+<h4>CPU inference couldn't keep up with the control loop</h4>
+<p>I don't have a local GPU, so inference ran on my PC's CPU inside the control loop: observe, infer, act, repeat. The loop was meant to run at 30 Hz to match the training data. It managed about 6 Hz, and the timing was inconsistent on top of that, so every cycle overran by a different amount. The arm moved in jerks and couldn't grasp properly.</p>
+<p>My first instinct was to stop fighting it and set the loop to a rate the CPU could actually hold (<code>--fps=6</code>), so the timing would at least be consistent. That made things worse, not better. Leaving the loop to free-run at the default rate performed noticeably better on the arm.</p>
+<p>My best explanation is that capping the loop at 6 Hz throws away the cycles that would have finished quicker, so the average rate drops below what free-running manages. A policy trained on 30 fps demonstrations is already executing several times slower than the motion it learned from, and pinning the rate stretches it further. Steady timing turned out to matter less than staying as close to the demonstrated speed as the hardware allows. I want to re-run both configurations and log the actual loop rates before I put more weight on that explanation.</p>
+<p>The proper fix is architectural. ACT predicts a chunk of actions per inference, so the robot doesn't need a new inference every timestep. LeRobot's asynchronous inference splits the system into a <code>policy_server</code> and a <code>robot_client</code> talking over gRPC: the client plays out buffered actions at the control rate while the server works on the next chunk. Getting that running on Windows took a while, including patching a broken <code>packaging</code> import in the server. That got the motion smoother, though how often the arm gets a fresh look at the scene is still limited by how fast my CPU can run the policy.</p>
+</div>
+</div>
+<div class="problem">
+<div class="p-head"><span class="p-label">3.2 &mdash; CHECKPOINT CONFIG</span></div>
+<div class="p-body">
+<h4>The published checkpoint pointed at a revision that didn't exist</h4>
+<p>After training on Colab, loading the checkpoint locally failed on a <code>pretrained_revision</code> field baked into the model's config. It referenced a state of the repo that didn't match what was actually on the Hub. The error message wasn't much help, so I read through how LeRobot resolves checkpoints instead. The fix was editing the config directly on Hugging Face.</p>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<p class="secnum">4.0 &nbsp; REMOTE INFERENCE</p>
+<h2>A detour that didn't pay off</h2>
+<p>With the client and server split apart, the next step was to move the server onto a rented GPU so that inference wasn't the constraint at all.</p>
+<div class="problem">
+<div class="p-head"><span class="p-label">4.1 &mdash; UPLOAD BANDWIDTH</span></div>
+<div class="p-body">
+<h4>Fixed the compute bottleneck, hit a network one</h4>
+<p>GPU inference brought the forward pass down to 30&ndash;50 ms. But the client sends full camera frames every cycle, and two uncompressed 640&times;480 frames come to about 1.8 MB. Over my home WiFi that took roughly 850 ms to upload, which is worse end to end than the CPU had been.</p>
+<p>I patched the client to JPEG-encode each frame before sending (gRPC), and the server to decode it before the policy sees it. That cut the payload by about 90% and brought the round trip under 150 ms.</p>
+</div>
+</div>
+<div class="problem">
+<div class="p-head"><span class="p-label">4.2 &mdash; OUTCOME</span></div>
+<div class="p-body">
+<h4>Faster, and still worse than my PC</h4>
+<p>With compute and bandwidth both sorted, the remote setup still performed worse on the arm than local CPU inference. The server logs showed the "too similar" observation filter firing hundreds of times in a row, which means the policy was predicting almost no motion. That points at the policy rather than the network, and I haven't got to the bottom of it.</p>
+<p>So I parked the remote inference and just ran it locally. It's a bit juddery, but the robot can still complete the task.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="status">
+<div class="wrap">
+<p class="secnum">5.0 &nbsp; STATUS</p>
+<h2>It works inside the conditions it was trained on</h2>
+<p>The policy picks up the cube and puts it in the box reliably, as long as the cube, the box and the cameras are where they were during the demonstrations. Local CPU inference runs at about 2.5 Hz so the motion is jerky, but it still finishes the task, which makes me think the policy itself is fine and the speed is a separate problem.</p>
+<p>The stall at the grasp did go away, but I changed three things at once to get there: refocused the wrist camera, moved the front camera overhead, and cleared up the background. I don't know which of those did it, and I haven't gone back to find out.</p>
+<p>My next challenge was to try and get the robot to pick up a randomly placed cube and put it in the box. This is known as 'Generalisation', i.e. getting the robot to perform the task despite changes in it's environment.</p>
+<p>I recorded a second 50 episode dataset with the cube placed randomly and trained on it for 20k steps, but, it policy performed badly: (See Below)</p>
+<p>&nbsp;</p>
+<p>&nbsp;--- Add Video of Bad Performance</p>
+<p>From some research online, I think it's likely that 50 episodes is too few to achieve generalisation, and I'll need to collect a lot more data.</p>
+<p>What I'm doing next:</p>
+<ul>
+<li>Collect more training data with the cube, placed deliberately in a number of discrete locations, and to then retrain the model.</li>
+<li>Invest in some more capable compute..?</li>
+</ul>
+<div class="placeholder">FIG. 3 &mdash; OPTIONAL: A FAILURE CLIP <small>Ten seconds of the cube placed outside the trained region, or the old stall, with a line on what you think is going on. Showing the limits alongside the success is worth more than the success on its own.</small></div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<p class="secnum">6.0 &nbsp; REFERENCES</p>
+<h2>Datasets, models, and code</h2>
+<ul class="links-list">
+<li>Dataset: <a href="https://huggingface.co/datasets/fkearsey/Test7_20260624_130325">fkearsey/Test7_20260624_130325</a> &mdash; 50 episodes, fixed placement</li>
+<li>Dataset: <a href="https://huggingface.co/datasets/fkearsey/P_P_Green_Cube_Random_Placement">fkearsey/P_P_Green_Cube_Random_Placement</a> &mdash; randomised placement</li>
+<li>Model: <a href="https://huggingface.co/fkearsey/Test7_Colab">fkearsey/Test7_Colab</a> &mdash; ACT, 25k steps</li>
+<li>Model: <a href="https://huggingface.co/fkearsey/Overhead_pick_and_place_1">fkearsey/Overhead_pick_and_place_1</a> &mdash; ACT, overhead camera</li>
+<li><!-- TODO: add GitHub repo link once the code and notes are pushed -->Code and notes: GitHub link coming soon</li>
+</ul>
+<p class="soft">Built with <a href="https://github.com/huggingface/lerobot">LeRobot</a> (Hugging Face). Hardware: SO-101 leader&ndash;follower arms and two USB cameras, plus a rented RunPod GPU for training and the remote-inference experiments in section 4.</p>
+</div>
+</section>
+<section id="background" class="about">
+<div class="wrap">
+<p class="secnum">7.0 &nbsp; BACKGROUND</p>
+<h2>Background</h2>
+<p>I'm a <strong>software and controls engineer</strong>. Most of my work has been production embedded software for automotive control systems: C, Simulink, real-time control, and hardware&ndash;software integration and debugging at the bench.</p>
+<p>The SO-101 work on this page is my own, done in my own time. I've written up the open questions as well as the results, because that's the part I'd want to read on someone else's site.</p>
+<p>First-Class BEng Mechanical Engineering, University of Nottingham. Placement year at Mercedes AMG High Performance Powertrains.</p>
+</div>
+</section>
+<footer id="contact">
+<div class="wrap">
+<p class="secnum">8.0 &nbsp; CONTACT</p>
+<div class="footlinks"><a href="mailto:fraserkearsey@gmail.com">fraserkearsey@gmail.com</a> <!-- TODO: replace # with your real profile URLs --> <a href="#">github</a> <a href="#">linkedin</a> <a href="https://huggingface.co/fkearsey">hugging face</a></div>
+<p class="copyright">&copy; 2026 FRASER KEARSEY</p>
+</div>
+</footer><!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
+<h2>Welcome To The Best Online HTML Web Editor!</h2>
+<p style="font-size: 1.5em;">You can <strong style="background-color: #317399; padding: 0 5px; color: #fff;">type your text</strong> directly in the editor or paste it from a Word Doc, PDF, Excel etc.</p>
+<p style="font-size: 1.5em;">The <strong>visual editor</strong> on the right and the <strong>source editor</strong> on the left are linked together and the changes are reflected in the other one as you type! <img src="https://html5-editor.net/images/smiley.png" alt="smiley" /></p>
+<table class="editorDemoTable">
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td><strong>City</strong></td>
+<td><strong>Age</strong></td>
+</tr>
+<tr>
+<td>John</td>
+<td>Chicago</td>
+<td>23</td>
+</tr>
+<tr>
+<td>Lucy</td>
+<td>Wisconsin</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Amanda</td>
+<td>Madison</td>
+<td>22</td>
+</tr>
+</tbody>
+</table>
+<p>This is a table you can experiment with.</p>

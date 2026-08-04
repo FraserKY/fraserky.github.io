@@ -147,7 +147,7 @@ footer{padding:40px 0 52px}
   <div class="wrap">
     <h1>Imitation learning on an SO-101 arm</h1>
     <div class="lede">
-      <p>This page details my foray into imitation learning and ACT. I printed and built a pair of SO-101 robot arms, recorded demonstrations of a pick-and-place task, trained an ACT policy on them, and got the robot arm to complete the task autonomously. It works, as long as everything is where it was during training.</p>
+      <p>This page details my foray into imitation learning and ACT. I printed and built a pair of SO-101 robot arms, recorded demonstrations of a pick-and-place task, trained an ACT policy on them, and got the robot arm to complete the task autonomously.</p>
       <p>This is the write-up. It includes the things that didn't work, because those took most of the time.</p>
     </div>
   </div>
@@ -159,22 +159,22 @@ footer{padding:40px 0 52px}
   <div class="wrap">
     <p class="secnum">1.0 &nbsp; TASK</p>
     <h2>Placing a cube into a box</h2>
-    <p>My aims were to learn about an exciting new technology, and also potentially automate some menial tasks I find boring.. I decided it would be best to start small, so my first task was to teach a robot the arm to pick up a green cube and put it in a box. I thought this would be the best place to start learning about robot learning policies.</p>
+    <p>My aims were to learn about an exciting new technology, and also to potentially automate some menial tasks I find boring. I decided it would be best to start small, so my first task was to teach the robot arm to pick up a green cube and put it in a box. I thought this would be the best place to start learning about robot learning policies.</p>
     <p>I started with a pencil sharpener. The policy kept stalling just short of the grasp, so I switched to a cube, which I thought would be easier to identify and could be gripped more easily. I wanted one thing working end to end before making it harder. Eventually I'd like to get to something useful, like unloading a dishwasher (although I now appreciate this is likely a very difficult problem that lots of embodied AI companies are trying to solve).</p>
 
     <div class="media-pair">
       <figure class="media">
-        <video class="portrait" src="Video/Working_Inference_6fps.mp4" controls playsinline></video>
+        <video class="portrait" src="Video/Working_Inference_6fps.mp4" controls muted playsinline></video>
         <figcaption>FIG. 1A &mdash; INFERENCE AT ~6 HZ (LOOP RATE CAPPED).</figcaption>
       </figure>
       <figure class="media">
-        <video class="portrait" src="Video/Working_Inference_30fps_720.mp4" controls playsinline></video>
+        <video class="portrait" src="Video/Working_Inference_30fps_720.mp4" controls muted playsinline></video>
         <figcaption>FIG. 1B &mdash; INFERENCE FREE-RUNNING, CLOSER TO THE 30 HZ TRAINING RATE.</figcaption>
       </figure>
     </div>
     <p class="soft">FIG. 1 &mdash; THE TRAINED POLICY RUNNING AUTONOMOUSLY, LOCAL CPU INFERENCE, AT BOTH LOOP RATES DISCUSSED IN SECTION 3.1.</p>
 
-    <p>The hardware setup is a pair of SO-101 arms. One is has a 'gripper' on the end (a follower), and the other a handle (a leader). I printed the parts for both and assembled them myself. To record a demonstration I move the leader by hand and the follower copies it, while two cameras (one on the follower's wrist, one overhead) record what it sees along with its joint positions.</p>
+    <p>The hardware setup is a pair of SO-101 arms. One has a 'gripper' on the end (a follower), and the other a handle (a leader). I printed the parts for both and assembled them myself. To record a demonstration I move the leader by hand and the follower copies it, while two cameras (one on the follower's wrist, one overhead) record what it sees along with its joint positions.</p>
 
     <!-- FIG. 2 — data collection timelapse. Same drill: swap YOUR_VIDEO_ID. -->
     <figure class="media short">
@@ -182,7 +182,7 @@ footer{padding:40px 0 52px}
       <figcaption>FIG. 2 — RECORDING DEMONSTRATIONS. 50 EPISODES TELEOPERATED VIA THE LEADER ARM.</figcaption>
     </figure>
 
-    <p>The overhead camera used to sit on a stand in front of the follower arm. After getting poor performance from the first set of data and training, I decided an overhead view would produce a more varied output, resulting in a better trained model and inference performance. Moving it meant re-recording the dataset. I also placed some visual markers to ensure everything could be placed in the same position, to make the task more deterministic, in an attempt to get better results. </p>
+    <p>The overhead camera used to sit on a stand in front of the follower arm. After getting poor performance from the first set of data and training, I decided an overhead view would produce a more varied output, resulting in a better trained model and inference performance. Moving it meant re-recording the dataset. I also placed some visual markers to ensure everything could be placed in the same position, to make the task more deterministic, in an attempt to get better results.</p>
 
     <div class="datastrip">
       <div><span class="k">Robot</span><br><span class="v">SO-101, 6 DOF</span></div>
@@ -220,17 +220,15 @@ footer{padding:40px 0 52px}
         <p>Policy runs against the real arm. Local CPU inference is what I use; async and remote GPU were both tried.</p>
       </div>
     </div>
-    <p class="soft">ACT, or Action Chunking with Transformers is an imitation learning method used for fine robot manipluation. The transformer takes the camera and joint position data, and feeds it into a neural network. This neural network then predicts where the actuators should next position themselves.
+    <p class="soft">ACT, or Action Chunking with Transformers, is an imitation learning method used for fine robot manipulation. The transformer takes the camera and joint position data and feeds it into a neural network. This neural network then predicts where the actuators should next position themselves.</p>
 
-The action chunking part of the method predicts a number of future steps at a time. Predicting a number of future actions reduces compounding errors and smooths the robots movement.
+    <p class="soft">The action chunking part of the method predicts a number of future steps at a time. Predicting a number of future actions reduces compounding errors and smooths the robot's movement.</p>
 
-Temporal assembling can then be used to update / average the future actions based on a snapshot of taken a certain length into the predicted actions.
-      
-It's well supported in LeRobot and trains in a couple of hours on a cheap rented GPU, which suits a 50-episode dataset.</p>
+    <p class="soft">Temporal ensembling can then be used to update and average the future actions, based on a snapshot taken a certain length into the predicted sequence.</p>
 
-<p>
-  To train an ACT model you must complete the following steps: 1. Record a number of teleoperated demonstrations of the task you want the arm to complete. 2. Train a model using the data you collect. 3. Deploy the policy onto the arm. 
-</p>
+    <p class="soft">It's well supported in LeRobot and trains in a couple of hours on a cheap rented GPU, which suits a 50-episode dataset.</p>
+
+    <p>To train an ACT model, you must complete the following steps: 1. Record a number of teleoperated demonstrations of the task you want the arm to complete. 2. Train a model using the data you collect. 3. Deploy the policy onto the arm.</p>
   </div>
 </section>
 
@@ -244,11 +242,11 @@ It's well supported in LeRobot and trains in a couple of hours on a cheap rented
       <div class="p-head"><span class="p-label">3.1 &mdash; CONTROL RATE</span></div>
       <div class="p-body">
         <h4>CPU inference couldn't keep up with the control loop</h4>
-        <p>I don't have a local GPU, so I first ran inference on my PC's CPU . The control loop (observe, infer, act, repeat) was meant to run at 30 Hz to match the training data. It managed about 6 Hz, and the timing was inconsistent on top of that, so every cycle overran by a different amount. The arm moved in jerks and couldn't grasp properly. (although I now put this down to poor camera positioning and inconsistent training data).</p>
+        <p>I don't have a local GPU, so I first ran inference on my PC's CPU. The control loop (observe, infer, act, repeat) was meant to run at 30 Hz to match the training data. It managed about 6 Hz, and the timing was inconsistent on top of that, so every cycle overran by a different amount. The arm moved in jerks and couldn't grasp properly, although I now put this down to poor camera positioning and inconsistent training data as much as the control rate itself.</p>
         
         <p>My first instinct was to set the loop to a rate the CPU could achieve (<code>--fps=6</code>), so the timing would at least be consistent. Strangely that made things worse, not better. Leaving the loop to free-run at the default rate performed noticeably better on the arm.</p>
         
-        <p>My best explanation for this is that the LeRobot framework splits policy inference and motor control. The neural network may only have been returning a future actions 3 times a second, but the motor control loop is running at the 30fps rate, resulting in smoother and faster motion compared to the attempted run at 6fps. </p>
+        <p>My best explanation for this is that the LeRobot framework splits policy inference and motor control. The neural network may only have been returning future actions three times a second, but the motor control loop is running at the 30fps rate, resulting in smoother and faster motion compared to the attempted run at 6fps.</p>
         
         <p>The proper fix would be to run inference on more capable hardware, so I looked at a remote GPU. ACT predicts a chunk of actions per inference, so the robot doesn't need a new inference every timestep. LeRobot's asynchronous inference architecture splits the system into a <code>policy_server</code> and a <code>robot_client</code> talking over gRPC. I set this up on a rented RunPod GPU, which at first performed worse than running locally &mdash; I traced that to latency between my PC and the remote GPU, even after choosing one located in Europe. The client was sending full, uncompressed camera frames every cycle; JPEG-encoding them before sending cut the payload by about 90% and brought the round trip under 150 ms. Getting the async server running on Windows also took a while, including patching a broken <code>packaging</code> import. The motion got smoother, but the remote setup still performed worse on the arm than local CPU inference &mdash; the server logs showed the "too similar" observation filter firing hundreds of times in a row, meaning the policy was predicting almost no motion. That points at the policy rather than the network, and I haven't got to the bottom of it. So I parked the remote inference and just ran it locally.</p>
 
@@ -293,13 +291,12 @@ It's well supported in LeRobot and trains in a couple of hours on a cheap rented
 <section>
   <div class="wrap">
     <p class="secnum">5.0 &nbsp; REFERENCES</p>
-    <h2>Datasets, models, and code</h2>
+    <h2>Datasets and models</h2>
     <ul class="links-list">
-      <li>Dataset: <a href="https://huggingface.co/datasets/fkearsey/Test7_20260624_130325">fkearsey/Test7_20260624_130325</a> &mdash; 50 episodes, fixed placement</li>
+      <li>Dataset: <a href="https://huggingface.co/datasets/fkearsey/Overhead_pick_and_place_1">fkearsey/Overhead_pick_and_place_1</a> &mdash; 50 episodes, fixed placement</li>
       <li>Dataset: <a href="https://huggingface.co/datasets/fkearsey/P_P_Green_Cube_Random_Placement">fkearsey/P_P_Green_Cube_Random_Placement</a> &mdash; randomised placement</li>
       <li>Model: <a href="https://huggingface.co/fkearsey/Test7_Colab">fkearsey/Test7_Colab</a> &mdash; ACT, 25k steps</li>
       <li>Model: <a href="https://huggingface.co/fkearsey/Overhead_pick_and_place_1">fkearsey/Overhead_pick_and_place_1</a> &mdash; ACT, overhead camera</li>
-      <li><!-- TODO: add GitHub repo link once the code and notes are pushed -->Code and notes: GitHub link coming soon</li>
     </ul>
     <p class="soft">Built with <a href="https://github.com/huggingface/lerobot">LeRobot</a> (Hugging Face). Hardware: SO-101 leader&ndash;follower arms and two USB cameras, plus a rented RunPod GPU for training and the remote-inference experiments in section 3.1.</p>
   </div>
@@ -321,9 +318,8 @@ It's well supported in LeRobot and trains in a couple of hours on a cheap rented
     <p class="secnum">7.0 &nbsp; CONTACT</p>
     <div class="footlinks">
       <a href="mailto:fraserkearsey@gmail.com">fraserkearsey@gmail.com</a>
-      <!-- TODO: replace # with your real profile URLs -->
-      <a href="#">github</a>
-      <a href="#">linkedin</a>
+      <a href="https://github.com/fraserky">github</a>
+      <a href="https://linkedin.com/in/fraserkearsey">linkedin</a>
       <a href="https://huggingface.co/fkearsey">hugging face</a>
     </div>
     <p class="copyright">&copy; 2026 FRASER KEARSEY</p>

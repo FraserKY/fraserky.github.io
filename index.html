@@ -1,5 +1,122 @@
-<p>&nbsp;</p>
-<p></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fraser Kearsey — imitation learning on an SO-101 arm</title>
+<meta name="description" content="An end-to-end imitation learning pipeline on the SO-101 robot arm: teleoperated data collection, ACT policy training, and deployment on real hardware.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ffffff;
+  --ink:#111111;
+  --soft:#444444;
+  --grey:#767676;
+  --panel:#f2f2f0;
+  --rule:#dddddd;
+  --red:#c8102e;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{font-family:var(--sans);color:var(--ink);line-height:1.65;background:var(--paper);font-size:17px}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px}
+a:hover{color:var(--red)}
+a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+/* ---------- nav ---------- */
+nav{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:10}
+nav .wrap{max-width:960px;display:flex;justify-content:space-between;align-items:center;height:58px}
+.brand{font-weight:800;font-size:.95rem;letter-spacing:-.01em}
+.docref{font-family:var(--mono);font-size:.72rem;color:var(--grey)}
+.navlinks{display:flex;gap:22px;font-family:var(--mono);font-size:.78rem}
+.navlinks a{color:var(--grey);text-decoration:none}
+.navlinks a:hover{color:var(--red)}
+
+/* ---------- intro ---------- */
+header.intro{padding:64px 0 44px;border-bottom:1px solid var(--rule)}
+h1{font-size:clamp(1.9rem,4.6vw,2.7rem);line-height:1.1;font-weight:800;letter-spacing:-.03em;margin-bottom:18px}
+.lede{color:var(--soft);font-size:1.05rem}
+.lede p{margin-bottom:14px}
+.lede p:last-child{margin-bottom:0}
+
+/* ---------- sections ---------- */
+section{padding:44px 0;border-bottom:1px solid var(--rule)}
+.secnum{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--red);margin-bottom:10px}
+h2{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
+p{margin-bottom:14px}
+p:last-child{margin-bottom:0}
+p.soft{color:var(--soft)}
+code{font-family:var(--mono);font-size:.85em;background:var(--panel);border:1px solid var(--rule);padding:1px 5px}
+ul{margin:0 0 14px 1.2em}
+li{margin-bottom:6px}
+
+/* ---------- datastrip ---------- */
+.datastrip{display:flex;flex-wrap:wrap;border:1px solid var(--ink);margin-top:26px}
+.datastrip div{padding:12px 18px;border-right:1px solid var(--ink);flex:1;min-width:128px}
+.datastrip div:last-child{border-right:none}
+.datastrip .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}
+.datastrip .v{font-family:var(--mono);font-size:.92rem;font-weight:600}
+
+/* ---------- figures ---------- */
+.placeholder{border:2px dashed var(--red);background:#fdf5f6;padding:32px 24px;text-align:center;font-family:var(--mono);font-size:.82rem;color:var(--red);margin:22px 0}
+.placeholder small{display:block;margin-top:8px;color:var(--grey);font-size:.72rem;line-height:1.5}
+figure.media{margin:22px 0}
+figure.media video,figure.media img,figure.media iframe{display:block;width:100%;border:1px solid var(--ink)}
+figure.media figcaption{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--grey);margin-top:8px}
+
+/* ---------- pipeline ---------- */
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);margin:24px 0;border:1px solid var(--ink)}
+.stage{padding:16px;border-right:1px solid var(--ink)}
+.stage:last-child{border-right:none}
+.stage .num{font-family:var(--mono);font-size:.66rem;color:var(--red);font-weight:600;letter-spacing:.08em}
+.stage h4{font-size:.92rem;font-weight:600;margin:6px 0 4px}
+.stage p{font-size:.8rem;color:var(--soft);margin:0;line-height:1.45}
+
+/* ---------- problem blocks ---------- */
+.problem{border:1px solid var(--ink);margin:18px 0}
+.problem .p-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 18px;background:var(--panel);border-bottom:1px solid var(--ink)}
+.problem .p-label{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--grey)}
+.problem .p-body{padding:18px 20px}
+.problem h4{font-size:1rem;font-weight:600;margin-bottom:8px}
+.problem p{font-size:.93rem;margin-bottom:8px}
+.problem p:last-child{margin-bottom:0}
+
+/* ---------- lists ---------- */
+.links-list{list-style:none;margin-left:0}
+.links-list li{font-family:var(--mono);font-size:.86rem;margin-bottom:8px}
+
+/* ---------- background ---------- */
+.about p{color:var(--soft)}
+.about strong{color:var(--ink)}
+
+/* ---------- footer ---------- */
+footer{padding:40px 0 52px}
+.footlinks{display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:.82rem;margin-bottom:14px}
+.copyright{font-family:var(--mono);font-size:.7rem;color:var(--grey)}
+
+@media (max-width:760px){
+  .docref{display:none}
+}
+@media (max-width:700px){
+  .pipeline{grid-template-columns:1fr 1fr}
+  .stage:nth-child(2){border-right:none}
+  .stage:nth-child(1),.stage:nth-child(2){border-bottom:1px solid var(--ink)}
+}
+@media (max-width:430px){
+  .pipeline{grid-template-columns:1fr}
+  .stage{border-right:none;border-bottom:1px solid var(--ink)}
+  .stage:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
 <nav>
 <div class="wrap"><span class="brand">FRASER KEARSEY</span> <span class="docref">DOC: FK-PORTFOLIO &middot; REV 2026-08</span>
 <div class="navlinks"><a href="#pipeline">pipeline</a> <a href="#problems">problems</a> <a href="#status">status</a> <a href="#contact">contact</a></div>
@@ -152,32 +269,7 @@
 <div class="footlinks"><a href="mailto:fraserkearsey@gmail.com">fraserkearsey@gmail.com</a> <!-- TODO: replace # with your real profile URLs --> <a href="#">github</a> <a href="#">linkedin</a> <a href="https://huggingface.co/fkearsey">hugging face</a></div>
 <p class="copyright">&copy; 2026 FRASER KEARSEY</p>
 </div>
-</footer><!-- #######  THIS IS A COMMENT - Visible only in the source editor #########-->
-<h2>Welcome To The Best Online HTML Web Editor!</h2>
-<p style="font-size: 1.5em;">You can <strong style="background-color: #317399; padding: 0 5px; color: #fff;">type your text</strong> directly in the editor or paste it from a Word Doc, PDF, Excel etc.</p>
-<p style="font-size: 1.5em;">The <strong>visual editor</strong> on the right and the <strong>source editor</strong> on the left are linked together and the changes are reflected in the other one as you type! <img src="https://html5-editor.net/images/smiley.png" alt="smiley" /></p>
-<table class="editorDemoTable">
-<tbody>
-<tr>
-<td><strong>Name</strong></td>
-<td><strong>City</strong></td>
-<td><strong>Age</strong></td>
-</tr>
-<tr>
-<td>John</td>
-<td>Chicago</td>
-<td>23</td>
-</tr>
-<tr>
-<td>Lucy</td>
-<td>Wisconsin</td>
-<td>19</td>
-</tr>
-<tr>
-<td>Amanda</td>
-<td>Madison</td>
-<td>22</td>
-</tr>
-</tbody>
-</table>
-<p>This is a table you can experiment with.</p>
+</footer>
+
+</body>
+</html>

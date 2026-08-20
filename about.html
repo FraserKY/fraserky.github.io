@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fraser Kearsey — imitation learning on an SO-101 arm</title>
-<meta name="description" content="An end-to-end imitation learning pipeline on the SO-101 robot arm: teleoperated data collection, ACT policy training, and deployment on real hardware.">
+<title>Fraser Kearsey — background</title>
+<meta name="description" content="Background: software and controls engineer working on embedded automotive control systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -201,6 +201,57 @@ footer{padding:40px 0 52px}
 @media (max-width:520px){
   .dropdown .menu{min-width:0;width:max-content;max-width:78vw}
 }
+
+/* ---------- project cards ---------- */
+.projects{border:1px solid var(--ink);margin-top:24px}
+a.project{
+  display:grid;
+  grid-template-columns:40px 170px 1fr 24px;
+  align-items:start;
+  gap:0 18px;
+  padding:20px;
+  border-bottom:1px solid var(--ink);
+  text-decoration:none;
+  color:var(--ink);
+  background:var(--paper);
+  transition:background .12s ease;
+}
+a.project:last-child{border-bottom:none}
+a.project:hover{background:var(--panel)}
+a.project:hover .p-title{color:var(--red)}
+a.project:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
+.p-num{font-family:var(--mono);font-size:.72rem;color:var(--red);font-weight:600;letter-spacing:.08em;padding-top:4px}
+.p-thumb{display:block}
+.p-thumb img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--ink)}
+.p-thumb .noimg{
+  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:4/3;
+  border:1px dashed var(--rule);
+  background:var(--panel);
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;
+  color:var(--grey);text-align:center;padding:8px;
+}
+.p-title{display:block;font-size:1.05rem;font-weight:600;letter-spacing:-.01em;margin-bottom:4px;line-height:1.35}
+.p-desc{display:block;font-size:.92rem;color:var(--soft);margin-bottom:10px;line-height:1.5}
+.p-meta{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--grey);text-transform:uppercase}
+.p-arrow{font-family:var(--mono);font-size:1rem;color:var(--grey);text-align:right;padding-top:2px}
+a.project:hover .p-arrow{color:var(--red)}
+.badge{
+  display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid var(--grey);color:var(--grey);
+  padding:1px 6px;margin-left:8px;vertical-align:2px;
+}
+.badge.wip{border-color:var(--red);color:var(--red)}
+@media (max-width:640px){
+  a.project{grid-template-columns:40px 1fr;gap:0 14px}
+  .p-thumb{grid-column:2;margin-bottom:12px}
+  .p-thumb img,.p-thumb .noimg{max-width:280px}
+  .p-arrow{display:none}
+}
+
+/* ---------- about ---------- */
+.about p{color:var(--soft)}
+.about strong{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -208,17 +259,17 @@ footer{padding:40px 0 52px}
 <nav>
   <div class="wrap">
     <a class="brand" href="index.html">FRASER KEARSEY</a>
-    <span class="docref">DOC: FK-SO101 &middot; REV 2026-08</span>
+    <span class="docref">DOC: FK-ABOUT &middot; REV 2026-08</span>
     <div class="navlinks">
       <details class="dropdown">
         <summary>projects</summary>
         <div class="menu">
-          <a href="so101.html" aria-current="page"><span class="idx">01</span>SO-101 imitation learning</a>
+          <a href="so101.html"><span class="idx">01</span>SO-101 imitation learning</a>
           <a href="jetson-nano.html"><span class="idx">02</span>Jetson Nano robot</a>
           <a href="esp32-foc.html"><span class="idx">03</span>ESP32 field-oriented control</a>
         </div>
       </details>
-      <a href="about.html">about</a>
+      <a href="about.html" aria-current="page">about</a>
       <a href="#contact">contact</a>
       <button class="themetoggle" type="button" aria-pressed="false" aria-label="Switch theme">dark</button>
     </div>
@@ -227,93 +278,44 @@ footer{padding:40px 0 52px}
 
 <header class="intro">
   <div class="wrap">
-    <p class="crumb"><a href="index.html">&larr; WORK</a> &nbsp;/&nbsp; 01 &nbsp;SO-101</p>
-    <h1>Imitation learning on an SO-101 arm</h1>
+    <p class="crumb"><a href="index.html">&larr; HOME</a> &nbsp;/&nbsp; ABOUT</p>
+    <h1>Background</h1>
     <div class="lede">
-      <p>This page details my foray into imitation learning and ACT. I printed and built a pair of SO-101 robot arms, recorded demonstrations of a pick-and-place task, trained an ACT policy on them, and got the robot arm to complete the task autonomously.</p>
-      <p>This is the write-up. It includes the things that didn't work, because those took most of the time.</p>
+      <p>Software and controls engineer, working mostly on production embedded software for automotive control systems.</p>
     </div>
   </div>
 </header>
 
 <main>
 
-<section>
+<section class="about">
   <div class="wrap">
-    <p class="secnum">1.0 &nbsp; TASK</p>
-    <h2>Placing a cube into a box</h2>
-    <p>My aims were to learn about an exciting new technology, and also to potentially automate some menial tasks I find boring. I wanted to start small and my first task was to teach the robot arm to pick up a green cube and put it in a box.</p>
-
-    <div class="media-pair">
-      <figure class="media">
-        <video class="portrait" src="Video/Working_Inference_6fps.mp4" controls muted playsinline></video>
-        <figcaption>FIG. 1A &mdash; INFERENCE AT ~6 HZ (LOOP RATE CAPPED).</figcaption>
-      </figure>
-      <figure class="media">
-        <video class="portrait" src="Video/Working_Inference_30fps_720.mp4" controls muted playsinline></video>
-        <figcaption>FIG. 1B &mdash; INFERENCE FREE-RUNNING, CLOSER TO THE 30 HZ TRAINING RATE.</figcaption>
-      </figure>
-    </div>
-    <p class="soft">FIG. 1 &mdash; THE TRAINED POLICY RUNNING AUTONOMOUSLY ON LOCAL CPU INFERENCE, AT BOTH LOOP RATES.</p>
-
-    <p>The hardware setup is a pair of SO-101 arms. One has a 'gripper' on the end (a follower), and the other a handle (a leader). I printed the parts for both and assembled them myself. To record a demonstration I move the leader by hand and the follower copies it, while two cameras (one on the follower's wrist, one overhead) record what it sees along with its joint positions.</p>
-
-    <figure class="media short">
-      <video class="portrait" src="Video/so101-datacollection.mp4" autoplay loop muted playsinline></video>
-      <figcaption>FIG. 2 &mdash; RECORDING DEMONSTRATIONS. 50 EPISODES TELEOPERATED VIA THE LEADER ARM.</figcaption>
-    </figure>
-
-    <p>The overhead camera used to sit on a stand in front of the follower arm. After getting poor performance from the first set of data and training, I decided an overhead view would produce a more varied output, resulting in a better trained model and inference performance. Moving it meant re-recording the dataset. I also placed some visual markers to ensure everything could be placed in the same position, to make the task more deterministic, in an attempt to get better results.</p>
-
-    <div class="datastrip">
-      <div><span class="k">Robot</span><br><span class="v">SO-101, 6 DOF</span></div>
-      <div><span class="k">Policy</span><br><span class="v">ACT</span></div>
-      <div><span class="k">Demos</span><br><span class="v">50 episodes</span></div>
-      <div><span class="k">Cameras</span><br><span class="v">overhead + wrist</span></div>
-      <div><span class="k">Framework</span><br><span class="v">LeRobot</span></div>
-    </div>
+    <p class="secnum">1.0 &nbsp; NOW</p>
+    <h2>What I do</h2>
+    <p>Most of my work has been production embedded software for automotive control systems: <strong>C, Simulink, real-time control</strong>, and hardware&ndash;software integration and debugging at the bench.</p>
+    <p>The projects on this site are my own, done in my own time. They're mostly robotics and motor control, which is the same problem from the other end: making something physical behave predictably.</p>
   </div>
 </section>
 
-<section id="status">
+<section class="about">
   <div class="wrap">
-    <p class="secnum">2.0 &nbsp; STATUS</p>
-    <h2>It works inside the conditions it was trained on</h2>
-    <p>The policy picks up the cube and puts it in the box reliably, as long as the cube, the box and the cameras are where they were during the demonstrations. Local CPU inference runs at about 2.5 Hz so the motion is jerky, but it still finishes the task, which makes me think the model itself is okay, but the rate of inference is likely a problem.</p>
-    <p>My next challenge is to get the robot to pick up a randomly placed cube and put it in the box. This is known as generalisation: getting the robot to perform the task despite changes in its environment.</p>
-    <p>I recorded a second 50 episode dataset with the cube placed randomly and trained on it for 20k steps, but that policy performed badly.</p>
-
-    <!-- FIG. 3 — the poor generalisation run. Replace .placeholder with a video once footage is ready. -->
-    <figure class="media">
-      <div class="placeholder">Video pending&hellip;</div>
-      <figcaption>FIG. 3 &mdash; THE RANDOM-PLACEMENT POLICY FAILING. TRAINED ON 50 EPISODES, 20K STEPS.</figcaption>
-    </figure>
-
-    <p>From some research online, I think it's likely that 50 episodes is too few to achieve generalisation, and I'll need to collect more data.</p>
-    <p>My next step is to collect more training data with the cube, placed deliberately in a number of discrete locations, and then retrain the model.</p>
+    <p class="secnum">2.0 &nbsp; EDUCATION</p>
+    <h2>Education</h2>
+    <p>First-Class BEng Mechanical Engineering, University of Nottingham.</p>
+    <p>Placement year at Mercedes AMG High Performance Powertrains.</p>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <p class="secnum">3.0 &nbsp; REFERENCES</p>
-    <h2>Datasets and models</h2>
-    <ul class="links-list">
-      <li>Dataset: <a href="https://huggingface.co/datasets/fkearsey/Overhead_pick_and_place_1">fkearsey/Overhead_pick_and_place_1</a> &mdash; 50 episodes, fixed placement</li>
-      <li>Model: <a href="https://huggingface.co/fkearsey/Overhead_pick_and_place_1">fkearsey/Overhead_pick_and_place_1</a> &mdash; ACT, overhead camera</li>
-    </ul>
-    <p class="soft">Built with <a href="https://github.com/huggingface/lerobot">LeRobot</a> (Hugging Face). Hardware: SO-101 leader&ndash;follower arms and two USB cameras, plus a rented RunPod GPU for training.</p>
-  </div>
-</section>
+<!-- Room for more here if you want it: a photo, a tools list, a short CV.
+     Copy a <section class="about"> block and renumber. -->
 
 </main>
 
 <footer id="contact">
   <div class="wrap">
-    <p class="secnum">4.0 &nbsp; CONTACT</p>
+    <p class="secnum">3.0 &nbsp; CONTACT</p>
     <div class="footlinks">
       <a href="index.html">home</a>
-      <a href="about.html">about</a>
       <a href="mailto:fraserkearsey@gmail.com">fraserkearsey@gmail.com</a>
       <a href="https://github.com/fraserky">github</a>
       <a href="https://linkedin.com/in/fraserkearsey">linkedin</a>
@@ -322,7 +324,6 @@ footer{padding:40px 0 52px}
     <p class="copyright">&copy; 2026 FRASER KEARSEY</p>
   </div>
 </footer>
-
 
 <script>
 (function(){

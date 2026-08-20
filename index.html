@@ -8,27 +8,41 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <style>
 :root{
-  --paper:#f6f4ef;
-  --ink:#15140f;
-  --soft:#45423b;
-  --grey:#7a766c;
-  --panel:#ebe7de;
-  --rule:#dbd6ca;
-  --red:#b8102a;
-  --wash:#f6eae9;
+  --paper:#f4f4f3;
+  --ink:#0f0f0f;
+  --soft:#3f3f3f;
+  --grey:#767676;
+  --panel:#e8e8e6;
+  --rule:#d6d6d4;
+  --red:#c00d26;
+  --wash:#f7e9ea;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --paper:#0e0e0e;
+  --ink:#ededed;
+  --soft:#adadad;
+  --grey:#858585;
+  --panel:#1a1a1a;
+  --rule:#2b2b2b;
+  --red:#ff5d72;
+  --wash:#251618;
+  color-scheme:dark;
 }
 @media (prefers-color-scheme: dark){
-  :root{
-    --paper:#14130f;
-    --ink:#ecebe5;
-    --soft:#b5b1a6;
-    --grey:#8b8579;
-    --panel:#1e1c17;
-    --rule:#2f2c25;
-    --red:#ff6478;
-    --wash:#2a1c1e;
+  :root:not([data-theme="light"]){
+    --paper:#0e0e0e;
+    --ink:#ededed;
+    --soft:#adadad;
+    --grey:#858585;
+    --panel:#1a1a1a;
+    --rule:#2b2b2b;
+    --red:#ff5d72;
+    --wash:#251618;
+    color-scheme:dark;
   }
 }
 :root{
@@ -38,7 +52,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
-html{color-scheme:light dark}
 body{font-family:var(--sans);color:var(--ink);line-height:1.65;background:var(--paper);font-size:17px}
 a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px}
 a:hover{color:var(--red)}
@@ -48,15 +61,20 @@ a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
 /* ---------- nav ---------- */
 nav{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:10}
 nav .wrap{max-width:960px;display:flex;justify-content:space-between;align-items:center;height:58px}
-.brand{font-weight:800;font-size:.95rem;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
+.brand{white-space:nowrap;font-weight:800;font-size:.95rem;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
 .brand:hover{color:var(--red)}
 .docref{font-family:var(--mono);font-size:.72rem;color:var(--grey)}
 .navlinks{display:flex;gap:22px;font-family:var(--mono);font-size:.78rem}
 .navlinks a{color:var(--grey);text-decoration:none}
 .navlinks a:hover{color:var(--red)}
 
+/* ---------- breadcrumb ---------- */
+.crumb{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--grey);padding:20px 0 0}
+.crumb a{color:var(--grey);text-decoration:none}
+.crumb a:hover{color:var(--red)}
+
 /* ---------- intro ---------- */
-header.intro{padding:64px 0 44px;border-bottom:1px solid var(--rule)}
+header.intro{padding:28px 0 44px;border-bottom:1px solid var(--rule)}
 h1{font-size:clamp(1.9rem,4.6vw,2.7rem);line-height:1.1;font-weight:800;letter-spacing:-.03em;margin-bottom:18px}
 .lede{color:var(--soft);font-size:1.05rem}
 .lede p{margin-bottom:14px}
@@ -73,14 +91,125 @@ code{font-family:var(--mono);font-size:.85em;background:var(--panel);border:1px 
 ul{margin:0 0 14px 1.2em}
 li{margin-bottom:6px}
 
+/* ---------- datastrip ---------- */
+.datastrip{display:flex;flex-wrap:wrap;border:1px solid var(--ink);margin-top:26px}
+.datastrip div{padding:12px 18px;border-right:1px solid var(--ink);flex:1;min-width:128px}
+.datastrip div:last-child{border-right:none}
+.datastrip .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}
+.datastrip .v{font-family:var(--mono);font-size:.92rem;font-weight:600}
+
+/* ---------- figures ---------- */
+.placeholder{border:2px dashed var(--red);background:var(--wash);padding:32px 24px;text-align:center;font-family:var(--mono);font-size:.82rem;color:var(--red);margin:22px 0}
+.placeholder small{display:block;margin-top:8px;color:var(--grey);font-size:.72rem;line-height:1.5}
+
+figure.media{margin:26px 0}
+figure.media img,figure.media video{display:block;width:100%;border:1px solid var(--ink)}
+/* responsive 16:9 box for YouTube embeds */
+figure.media .yt{position:relative;aspect-ratio:16/9;border:1px solid var(--ink);background:var(--panel)}
+figure.media .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+figure.media figcaption{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--grey);margin-top:10px;line-height:1.6}
+
+/* ---------- side-by-side video pair ---------- */
+.media-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:26px 0}
+.media-pair figure.media{margin:0}
+video.portrait{aspect-ratio:9/16;height:auto;object-fit:cover;object-position:center}
+figure.media.short{max-width:360px;margin-left:auto;margin-right:auto}
+@media (max-width:700px){
+  .media-pair{grid-template-columns:1fr}
+}
+
+/* ---------- lists ---------- */
+.links-list{list-style:none;margin-left:0}
+.links-list li{font-family:var(--mono);font-size:.86rem;margin-bottom:8px}
+
+/* ---------- footer ---------- */
+footer{padding:40px 0 52px}
+.footlinks{display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:.82rem;margin-bottom:14px}
+.copyright{font-family:var(--mono);font-size:.7rem;color:var(--grey)}
+
+@media (max-width:760px){
+  .docref{display:none}
+}
+@media (max-width:460px){
+  .navlinks{gap:14px}
+  nav .wrap{padding:0 16px}
+  /* contact lives in the footer just below, so drop it from the nav here */
+  .navlinks a[href="#contact"]{display:none}
+  .themetoggle{padding:4px 7px}
+}
+@media (max-width:380px){
+  .brand{font-size:.8rem}
+  .navlinks{gap:11px;font-size:.72rem}
+  .dropdown summary{font-size:.72rem}
+  .themetoggle{font-size:.66rem;padding:3px 6px}
+}
+
+/* ---------- theme toggle ---------- */
+.themetoggle{
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--grey);
+  background:transparent;
+  border:1px solid var(--rule);
+  padding:4px 9px;
+  cursor:pointer;
+  line-height:1.4;
+}
+.themetoggle:hover{color:var(--red);border-color:var(--red)}
+.themetoggle:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+/* ---------- projects dropdown ---------- */
+.dropdown{position:relative}
+.dropdown summary{
+  list-style:none;
+  cursor:pointer;
+  color:var(--grey);
+  font-family:var(--mono);
+  font-size:.78rem;
+  user-select:none;
+}
+.dropdown summary::-webkit-details-marker{display:none}
+.dropdown summary::after{content:" \25be";font-size:.7em}
+.dropdown summary:hover{color:var(--red)}
+.dropdown summary:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.dropdown[open] summary{color:var(--red)}
+.dropdown .menu{
+  position:absolute;
+  top:calc(100% + 14px);
+  right:0;
+  min-width:250px;
+  background:var(--paper);
+  border:1px solid var(--ink);
+  padding:6px 0;
+  z-index:20;
+}
+.dropdown .menu a{
+  display:block;
+  padding:8px 16px;
+  font-family:var(--mono);
+  font-size:.78rem;
+  color:var(--ink);
+  text-decoration:none;
+  white-space:nowrap;
+}
+.dropdown .menu a:hover{background:var(--panel);color:var(--red)}
+.dropdown .menu a[aria-current="page"]{color:var(--red)}
+.dropdown .menu a[aria-current="page"]::before{content:"\2022 ";}
+.dropdown .menu .idx{color:var(--grey);margin-right:8px}
+@media (max-width:520px){
+  .dropdown .menu{min-width:0;width:max-content;max-width:78vw}
+}
+
 /* ---------- project cards ---------- */
 .projects{border:1px solid var(--ink);margin-top:24px}
 a.project{
   display:grid;
-  grid-template-columns:56px 1fr 28px;
+  grid-template-columns:40px 170px 1fr 24px;
   align-items:start;
-  gap:0;
-  padding:20px 20px;
+  gap:0 18px;
+  padding:20px;
   border-bottom:1px solid var(--ink);
   text-decoration:none;
   color:var(--ink);
@@ -92,41 +221,39 @@ a.project:hover{background:var(--panel)}
 a.project:hover .p-title{color:var(--red)}
 a.project:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
 .p-num{font-family:var(--mono);font-size:.72rem;color:var(--red);font-weight:600;letter-spacing:.08em;padding-top:4px}
+.p-thumb{display:block}
+.p-thumb img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--ink)}
+.p-thumb .noimg{
+  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:4/3;
+  border:1px dashed var(--rule);
+  background:var(--panel);
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;
+  color:var(--grey);text-align:center;padding:8px;
+}
 .p-title{display:block;font-size:1.05rem;font-weight:600;letter-spacing:-.01em;margin-bottom:4px;line-height:1.35}
 .p-desc{display:block;font-size:.92rem;color:var(--soft);margin-bottom:10px;line-height:1.5}
 .p-meta{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--grey);text-transform:uppercase}
 .p-arrow{font-family:var(--mono);font-size:1rem;color:var(--grey);text-align:right;padding-top:2px}
 a.project:hover .p-arrow{color:var(--red)}
 .badge{
-  display:inline-block;
-  font-family:var(--mono);
-  font-size:.6rem;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  border:1px solid var(--grey);
-  color:var(--grey);
-  padding:1px 6px;
-  margin-left:8px;
-  vertical-align:2px;
+  display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid var(--grey);color:var(--grey);
+  padding:1px 6px;margin-left:8px;vertical-align:2px;
 }
 .badge.wip{border-color:var(--red);color:var(--red)}
-@media (max-width:520px){
-  a.project{grid-template-columns:44px 1fr;padding:18px 16px}
+@media (max-width:640px){
+  a.project{grid-template-columns:40px 1fr;gap:0 14px}
+  .p-num{grid-column:1;grid-row:1}
+  .p-thumb{grid-column:2;grid-row:1;margin-bottom:14px}
+  .p-body{grid-column:2;grid-row:2}
+  .p-thumb img,.p-thumb .noimg{max-width:300px}
   .p-arrow{display:none}
 }
 
-/* ---------- background ---------- */
+/* ---------- about ---------- */
 .about p{color:var(--soft)}
 .about strong{color:var(--ink)}
-
-/* ---------- footer ---------- */
-footer{padding:40px 0 52px}
-.footlinks{display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:.82rem;margin-bottom:14px}
-.copyright{font-family:var(--mono);font-size:.7rem;color:var(--grey)}
-
-@media (max-width:760px){
-  .docref{display:none}
-}
 </style>
 </head>
 <body>
@@ -136,9 +263,17 @@ footer{padding:40px 0 52px}
     <a class="brand" href="index.html">FRASER KEARSEY</a>
     <span class="docref">DOC: FK-PORTFOLIO &middot; REV 2026-08</span>
     <div class="navlinks">
-      <a href="#work">work</a>
-      <a href="#background">background</a>
+      <details class="dropdown">
+        <summary>projects</summary>
+        <div class="menu">
+          <a href="so101.html"><span class="idx">01</span>SO-101 imitation learning</a>
+          <a href="jetson-nano.html"><span class="idx">02</span>Jetson Nano robot</a>
+          <a href="esp32-foc.html"><span class="idx">03</span>ESP32 field-oriented control</a>
+        </div>
+      </details>
+      <a href="about.html">about</a>
       <a href="#contact">contact</a>
+      <button class="themetoggle" type="button" aria-pressed="false" aria-label="Switch theme">dark</button>
     </div>
   </div>
 </nav>
@@ -160,11 +295,15 @@ footer{padding:40px 0 52px}
     <p class="secnum">1.0 &nbsp; WORK</p>
     <h2>Projects</h2>
 
+    <!-- Card thumbnails are 4:3. Swap the .noimg block for an <img> once you have a photo:
+         <span class="p-thumb"><img src="Images/NAME.jpg" alt="DESCRIPTION"></span> -->
+
     <div class="projects">
 
       <a class="project" href="so101.html">
         <span class="p-num">01</span>
-        <span>
+        <span class="p-thumb"><img src="Images/so101-card.jpg" alt="A green 3D-printed SO-101 arm placing a cube into a cardboard box"></span>
+        <span class="p-body">
           <span class="p-title">Imitation learning on an SO-101 arm</span>
           <span class="p-desc">Built a pair of SO-101 arms, recorded 50 teleoperated demonstrations of a pick-and-place task, trained an ACT policy and ran it autonomously on the real hardware.</span>
           <span class="p-meta">ACT &middot; LeRobot &middot; Python &middot; Hugging Face</span>
@@ -174,7 +313,8 @@ footer{padding:40px 0 52px}
 
       <a class="project" href="jetson-nano.html">
         <span class="p-num">02</span>
-        <span>
+        <span class="p-thumb"><span class="noimg">Images/jetson-card.jpg</span></span>
+        <span class="p-body">
           <span class="p-title">Jetson Nano robot<span class="badge wip">in progress</span></span>
           <span class="p-desc">One-line summary to be written.</span>
           <span class="p-meta">Jetson Nano &middot; Python &middot; ROS</span>
@@ -184,7 +324,8 @@ footer{padding:40px 0 52px}
 
       <a class="project" href="esp32-foc.html">
         <span class="p-num">03</span>
-        <span>
+        <span class="p-thumb"><span class="noimg">Images/foc-card.jpg</span></span>
+        <span class="p-body">
           <span class="p-title">Field-oriented control on an ESP32<span class="badge wip">in progress</span></span>
           <span class="p-desc">Driving a brushless motor from an ESP32 with field-oriented control, written against ESP-IDF and the chip's MCPWM peripheral rather than an off-the-shelf library.</span>
           <span class="p-meta">ESP32 &middot; ESP-IDF &middot; MCPWM &middot; C</span>
@@ -196,22 +337,13 @@ footer{padding:40px 0 52px}
   </div>
 </section>
 
-<section id="background" class="about">
-  <div class="wrap">
-    <p class="secnum">2.0 &nbsp; BACKGROUND</p>
-    <h2>Background</h2>
-    <p>I'm a <strong>software and controls engineer</strong>. Most of my work has been production embedded software for automotive control systems: C, Simulink, real-time control, and hardware&ndash;software integration and debugging at the bench.</p>
-    <p>The projects on this site are my own, done in my own time.</p>
-    <p>First-Class BEng Mechanical Engineering, University of Nottingham. Placement year at Mercedes AMG High Performance Powertrains.</p>
-  </div>
-</section>
-
 </main>
 
 <footer id="contact">
   <div class="wrap">
-    <p class="secnum">3.0 &nbsp; CONTACT</p>
+    <p class="secnum">2.0 &nbsp; CONTACT</p>
     <div class="footlinks">
+      <a href="about.html">about</a>
       <a href="mailto:fraserkearsey@gmail.com">fraserkearsey@gmail.com</a>
       <a href="https://github.com/fraserky">github</a>
       <a href="https://linkedin.com/in/fraserkearsey">linkedin</a>
@@ -221,5 +353,50 @@ footer{padding:40px 0 52px}
   </div>
 </footer>
 
+<script>
+(function(){
+  var root = document.documentElement;
+  var btn = document.querySelector('.themetoggle');
+  if(!btn) return;
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function current(){
+    var set = root.getAttribute('data-theme');
+    if(set === 'dark' || set === 'light') return set;
+    return mq.matches ? 'dark' : 'light';
+  }
+  function paint(){
+    var now = current();
+    var next = now === 'dark' ? 'light' : 'dark';
+    btn.textContent = next;
+    btn.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+    btn.setAttribute('aria-pressed', now === 'dark' ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function(){
+    var next = current() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    // Persist across pages. Fails harmlessly if storage is unavailable.
+    try{ localStorage.setItem('theme', next); }catch(e){}
+    paint();
+  });
+  // follow the OS while no explicit choice has been made
+  mq.addEventListener('change', paint);
+  paint();
+})();
+</script>
+
+<script>
+// close the projects menu on outside click or Escape
+(function(){
+  var dd = document.querySelector('.dropdown');
+  if(!dd) return;
+  document.addEventListener('click', function(e){
+    if(dd.open && !dd.contains(e.target)) dd.open = false;
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && dd.open){ dd.open = false; dd.querySelector('summary').focus(); }
+  });
+})();
+</script>
 </body>
 </html>

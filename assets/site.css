@@ -376,3 +376,37 @@ footer{padding:40px 0 56px;border-top:1px solid var(--line-soft)}
   .affil-logo{min-width:52px;max-width:124px}
   .affil-logo img{max-width:124px}
 }
+
+/* ---------- CV: roles ---------- */
+.role{padding:20px 0;border-top:1px solid var(--line-soft)}
+.role:first-of-type{border-top:none;padding-top:6px}
+.role-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.role-title{font-size:1.02rem;font-weight:600;letter-spacing:-.01em}
+.role-org{color:var(--soft);font-weight:400}
+.role-dates{font-family:var(--mono);font-size:.74rem;letter-spacing:.03em;color:var(--grey);white-space:nowrap}
+.role-note{font-size:.84rem;color:var(--grey);margin:4px 0 0}
+.role ul{margin:10px 0 0 1.1em}
+.role li{font-size:.93rem;color:var(--soft);line-height:1.6;margin-bottom:7px}
+.role li:last-child{margin-bottom:0}
+.role li strong{color:var(--ink);font-weight:600}
+
+/* ---------- CV: skills ---------- */
+.skills{display:flex;flex-direction:column;gap:0;margin-top:18px}
+.skillrow{display:grid;grid-template-columns:190px 1fr;gap:18px;padding:13px 0;border-top:1px solid var(--line-soft)}
+.skillrow:first-child{border-top:none}
+.skillrow dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);padding-top:3px}
+.skillrow dd{margin:0;font-size:.93rem;color:var(--soft);line-height:1.6}
+@media (max-width:600px){
+  .skillrow{grid-template-columns:1fr;gap:4px}
+}
+
+/* ---------- rail edge fade ---------- */
+.rail::after{
+  content:"";position:absolute;top:0;right:-1px;bottom:18px;width:56px;
+  background:linear-gradient(to right, transparent, var(--paper) 78%);
+  pointer-events:none;opacity:1;transition:opacity .2s ease;
+}
+.rail.at-end::after{opacity:0}
+@media (max-width:560px){ .rail::after{width:32px} }
+
+.meta-line{font-family:var(--mono);font-size:.8rem;color:var(--grey);letter-spacing:.02em}

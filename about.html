@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="assets/site.css">
 <script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}
 // set before first paint so revealed sections don't flash in
@@ -67,21 +70,99 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
     <p class="crumb"><a href="index.html">&larr; Home</a></p>
     <h1>Background</h1>
     <div class="lede">
-      <p>Software and controls engineer, working on production embedded software for automotive control systems, and moving into robotics.</p>
+      <p>Systems and controls engineer with 6+ years building real-time software for production automotive control systems, and a track record of taking unfamiliar problems from datasheet to working hardware. In my own time I&rsquo;ve built the full path from a trained model to a moving robot. Targeting hands-on robotics systems roles.</p>
+      <p class="meta-line">Grantham, UK &mdash; open to relocating to London.</p>
     </div>
   </div>
 </header>
 
 <main>
 
-<!-- EDIT: section "What I do" -->
-<section class="about reveal">
+<!-- EDIT: section "Experience" -->
+<section class="reveal">
   <div class="wrap">
-    <p class="secnum">Now</p>
-    <h2>What I do</h2>
-    <p>Most of my work has been production embedded software for automotive control systems: <strong>C, Simulink, real-time control</strong>, and hardware&ndash;software integration and debugging at the bench.</p>
-    <p>I&rsquo;m in the middle of moving that work across into robotics. It&rsquo;s the same problem approached from a different end &mdash; getting something physical to behave predictably &mdash; but the tools are different, so I&rsquo;ve been learning them by building things rather than reading about them.</p>
-    <p>The projects on this site are all my own, done in my own time: imitation learning on a robot arm I printed and assembled, field-oriented motor control written from the peripheral up, and whatever comes next. I write up what didn&rsquo;t work as well as what did, because that&rsquo;s the part I&rsquo;d want to read on someone else&rsquo;s site.</p>
+    <p class="secnum">Experience</p>
+    <h2>Experience</h2>
+
+    <div class="role">
+      <div class="role-head">
+        <span class="role-title">Systems Engineer <span class="role-org">&middot; Boss Cabins</span></span>
+        <span class="role-dates">Jun 2026 &ndash; present</span>
+      </div>
+      <ul>
+        <li>Own the company&rsquo;s <strong>LiFePO4 battery energy storage project</strong> (25.6 V, off-grid mobile welfare units): identified the certification requirements (IEC 62619), authored the manufacturing specification, and act as main technical contact with the manufacturer.</li>
+        <li>Built a <strong>lumped-parameter thermal model</strong> of the battery system to predict peak temperatures under worst-case summer ambient conditions, and to quantify the benefit of active cooling for battery health.</li>
+        <li>Carried out scoping and concept-phase work for an <strong>IEC 61508</strong> assessment, and produced project status reporting to executive level.</li>
+        <li>Diagnosed a recurring fuse-blowing fault on a four-actuator cabin lifting system (~3.5 tonnes) and proposed a control-sequencing fix &mdash; settling all legs on ground contact before lifting together. No recurrences since.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <span class="role-title">Senior Development Engineer <span class="role-org">&middot; EMPEL</span></span>
+        <span class="role-dates">Jan 2026 &ndash; Mar 2026</span>
+      </div>
+      <ul>
+        <li>Dynamometer-based acceptance testing of electric motors: executing test procedures, verifying performance against specification, and passing off units for release.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <span class="role-title">Senior Software &amp; Controls Engineer <span class="role-org">&middot; Helix</span></span>
+        <span class="role-dates">Sep 2021 &ndash; Dec 2025</span>
+      </div>
+      <p class="role-note">Senior Software &amp; Controls Engineer &middot; Software &amp; Controls Engineer &middot; Graduate Engineer</p>
+      <ul>
+        <li>Developed and maintained <strong>production application software for high-performance automotive inverter control</strong>, using Model-Based Design in Simulink with generated C deployed to production hardware.</li>
+        <li>Designed and delivered a <strong>closed-loop driveline oscillation rejection controller</strong>: filtered the motor speed feedback to isolate the oscillation and applied counteracting torque through a PI controller, cutting oscillation by ~50% on the dyno. Derived a physics-based driveline model to tune it in simulation before dyno and vehicle testing.</li>
+        <li>Appointed <strong>Application Software lead</strong> for the next-generation product, technically directing a small team, authoring high- and detailed-level design documentation and running cross-team design reviews.</li>
+        <li>Integrated software with real-time control hardware, debugging at the hardware&ndash;software boundary with oscilloscopes, logic analysers and measurement tooling.</li>
+        <li>Initiated and led a software re-architecture introducing modular fault reporting, <strong>cutting fault identification from hours to minutes</strong>; automated development workflows in Python and Bash.</li>
+        <li>Defined and managed system-level requirements and interface specifications, including CAN interface specifications, streamlining integration debugging.</li>
+        <li>Worked with Electronics and Mechanical Design teams and directly with international customers on site. Familiar with ISO 26262 and how it is applied to developing functionally safe systems.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-head">
+        <span class="role-title">Placement Engineer, Product &amp; Validation <span class="role-org">&middot; Mercedes AMG High Performance Powertrains</span></span>
+        <span class="role-dates">Sep 2019 &ndash; Aug 2020</span>
+      </div>
+      <ul>
+        <li>Automated verification of race-engine components used under concession, <strong>~75% faster</strong> than the manual process; re-designed a component set to reduce unique versions from nine to two; built tooling to collate and visualise wear-rate data across operating conditions.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDIT: section "Technical skills" -->
+<section class="reveal">
+  <div class="wrap">
+    <p class="secnum">Skills</p>
+    <h2>Technical skills</h2>
+    <dl class="skills">
+      <div class="skillrow">
+        <dt>Controls &amp; modelling</dt>
+        <dd>Real-time control loops (closed-loop PI active damping, production automotive), physics-based plant modelling for simulation-based tuning, MATLAB/Simulink.</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Languages</dt>
+        <dd>Python, C, MATLAB/Simulink, Bash. C++ working knowledge, actively deepening (modern C++/CMake).</dd>
+      </div>
+      <div class="skillrow">
+        <dt>ML deployment</dt>
+        <dd>Real-time inference on constrained hardware (CPU, Jetson), gRPC streaming and latency optimisation, PyTorch, training on cloud GPUs, LeRobot and Hugging Face, multi-camera demonstration capture.</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Embedded &amp; integration</dt>
+        <dd>Embedded Linux (NVIDIA Jetson), CAN, I2C, motor control, sensor and actuator bring-up, hardware&ndash;software debugging with oscilloscopes and logic analysers.</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Prototyping &amp; process</dt>
+        <dd>3D printing and mechanical assembly, schematic capture (KiCAD), requirements management, design reviews, Git, Jira. Growth areas: C++, ROS 2.</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
@@ -90,23 +171,32 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
   <div class="wrap">
     <p class="secnum">Education</p>
     <h2>Education</h2>
+
     <!-- EDIT: affiliation logos and names -->
 <div class="affil">
       <div class="affil-item">
         <div class="affil-logo"><img src="Images/logo-uon.png" alt="University of Nottingham"></div>
         <div>
-          <span class="affil-name">University of Nottingham</span>
-          <span class="affil-note">BEng Mechanical Engineering, First Class</span>
+          <span class="affil-name">BEng Mechanical Engineering with a Year in Industry</span>
+          <span class="affil-note">The University of Nottingham, First-Class Honours <span class="yr">2015&ndash;2020</span></span>
         </div>
       </div>
       <div class="affil-item">
         <div class="affil-logo"><img src="Images/logo-mercedes.png" alt="Mercedes AMG High Performance Powertrains"></div>
         <div>
           <span class="affil-name">Mercedes AMG High Performance Powertrains</span>
-          <span class="affil-note">Placement year</span>
+          <span class="affil-note">Placement year <span class="yr">2019&ndash;2020</span></span>
         </div>
       </div>
     </div>
+
+    <ul style="margin-top:20px">
+      <li>93% in Computer Engineering and Mechatronics, including programming a robotic writing-arm controller in C. 85% in Computer Programming with MATLAB.</li>
+      <li>Led the group project developing a <a href="biomimetic-propulsion.html">biomimetic propulsion system</a> &mdash; highest mark in the year.</li>
+      <li>Final-year project: reduction gearbox design, 80%.</li>
+      <li>A-Levels: A* Mathematics, A Physics. Duke of Edinburgh Gold Award.</li>
+      <li>Additional training: fast.ai Practical Deep Learning (in progress) &mdash; computer vision fundamentals, training and deploying image models.</li>
+    </ul>
   </div>
 </section>
 

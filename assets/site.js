@@ -99,10 +99,14 @@
       var gap = parseFloat(getComputedStyle(track).columnGap) || 18;
       return card ? card.getBoundingClientRect().width + gap : 320;
     }
+    var rail = track.closest('.rail');
     function sync(){
       var max = track.scrollWidth - track.clientWidth;
+      var atEnd = track.scrollLeft >= max - 2;
       prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= max - 2;
+      next.disabled = atEnd;
+      // hide the right-hand fade once there is nothing more to scroll to
+      if(rail) rail.classList.toggle('at-end', atEnd || max <= 0);
     }
     prev.addEventListener('click', function(){ track.scrollBy({ left: -step(), behavior: 'smooth' }); });
     next.addEventListener('click', function(){ track.scrollBy({ left:  step(), behavior: 'smooth' }); });

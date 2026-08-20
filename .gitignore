@@ -1,0 +1,9 @@
+# Camera originals. Kept on disk for reference, but never served by the site —
+# the web-sized versions live in Images/ and Video/. Committing 4160px photos
+# and 44MB clips bloats the repo permanently, since git keeps every version.
+Images/Biomimetic Propulsion/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store

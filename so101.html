@@ -67,7 +67,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
     <p class="crumb"><a href="index.html">&larr; Home</a> &nbsp;/&nbsp; 01 &nbsp;SO-101</p>
     <h1>Imitation learning on an SO-101 arm</h1>
     <div class="lede">
-      <p>This page details my foray into imitation learning and ACT. I printed and built a pair of SO-101 robot arms, recorded demonstrations of a pick-and-place task, trained an ACT policy on them, and got the robot arm to complete the task autonomously.</p>
+      <p>This page details my journey into imitation learning and ACT. I wanted to learn more about how these systems worked, so I printed and built a pair of SO-101 robot arms, recorded demonstrations of a pick-and-place task, trained an ACT policy on them, and got the robot arm to complete the task autonomously.</p>
       <p>This is the write-up. It includes the things that didn&rsquo;t work, because those took most of the time.</p>
     </div>
   </div>
@@ -80,7 +80,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
   <div class="wrap">
     <p class="secnum">Task</p>
     <h2>Placing a cube into a box</h2>
-    <p>My aims were to learn about an exciting new technology, and also to potentially automate some menial tasks I find boring. I wanted to start small and my first task was to teach the robot arm to pick up a green cube and put it in a box.</p>
+    <p>My aims were to learn about a new technology, and I wanted to start small and my first task was to teach the robot arm to pick up a green cube and put it in a box.</p>
 
     <div class="media-pair">
       <figure class="media">
@@ -88,7 +88,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
         <figcaption>Fig. 1a &mdash; inference at ~6 Hz, loop rate capped.</figcaption>
       </figure>
       <figure class="media">
-        <video class="portrait" src="Video/Working_Inference_30fps_720.mp4" controls muted playsinline></video>
+        <video class="portrait" src="Video/Working_Inference_30fps_720.mp4" autoplay loop muted playsinline controls></video>
         <figcaption>Fig. 1b &mdash; inference free-running, closer to the 30 Hz training rate.</figcaption>
       </figure>
     </div>

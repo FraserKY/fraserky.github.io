@@ -410,3 +410,7 @@ footer{padding:40px 0 56px;border-top:1px solid var(--line-soft)}
 @media (max-width:560px){ .rail::after{width:32px} }
 
 .meta-line{font-family:var(--mono);font-size:.8rem;color:var(--grey);letter-spacing:.02em}
+
+/* home page: pull the projects up under the intro */
+.intro.home{padding-bottom:12px}
+#work{padding-top:12px}

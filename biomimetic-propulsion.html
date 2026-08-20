@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fraser Kearsey — background</title>
-<meta name="description" content="Background: software and controls engineer working on embedded automotive control systems.">
+<title>Fraser Kearsey — biomimetic propulsion system</title>
+<meta name="description" content="A university group design and manufacture project: a biomimetic propulsion system, winner of the IMechE best group project award.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -50,10 +50,10 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
           <a href="so101.html"><span class="idx">01</span>SO-101 imitation learning</a>
           <a href="jetson-nano.html"><span class="idx">02</span>Jetson Nano robot</a>
           <a href="esp32-foc.html"><span class="idx">03</span>ESP32 field-oriented control</a>
-          <a href="biomimetic-propulsion.html"><span class="idx">04</span>Biomimetic propulsion system</a>
+          <a href="biomimetic-propulsion.html" aria-current="page"><span class="idx">04</span>Biomimetic propulsion system</a>
         </div>
       </details>
-      <a href="about.html" aria-current="page">about</a>
+      <a href="about.html">about</a>
       <a href="#contact">contact</a>
       <button class="themetoggle" type="button" aria-pressed="false" aria-label="Switch theme"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
     </div>
@@ -64,63 +64,68 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 <!-- EDIT: page title and intro paragraphs -->
 <header class="intro sub">
   <div class="wrap">
-    <p class="crumb"><a href="index.html">&larr; Home</a></p>
-    <h1>Background</h1>
+    <p class="crumb"><a href="index.html">&larr; Home</a> &nbsp;/&nbsp; 04 &nbsp;Biomimetic propulsion</p>
+    <h1>Biomimetic propulsion system</h1>
     <div class="lede">
-      <p>Software and controls engineer, working mostly on production embedded software for automotive control systems.</p>
+      <p>A university group design and manufacture project: a propulsion system that takes its mechanism from how animals move through water rather than from a conventional propeller. Built and tested as a team at the University of Nottingham, and awarded the IMechE prize for best group design and manufacture project.</p>
+    </div>
+
+    <!-- EDIT: spec strip. Each cell is one div: .k is the label, .v the value -->
+<div class="datastrip">
+      <div><span class="k">Project</span><span class="v">Group design &amp; manufacture</span></div>
+      <div><span class="k">Institution</span><span class="v">Univ. of Nottingham</span></div>
+      <div><span class="k">Year</span><span class="v">2019&ndash;20</span></div>
+      <div><span class="k">My role</span><span class="v">TBC</span></div>
+      <div><span class="k">Award</span><span class="v">IMechE, best project</span></div>
     </div>
   </div>
 </header>
 
 <main>
 
-<!-- EDIT: section "What I do" -->
-<section class="about reveal">
+<!-- EDIT: section "section" -->
+<section id="gallery" class="reveal">
   <div class="wrap">
-    <p class="secnum">Now</p>
-    <h2>What I do</h2>
-    <p>Most of my work has been production embedded software for automotive control systems: <strong>C, Simulink, real-time control</strong>, and hardware&ndash;software integration and debugging at the bench.</p>
-    <p>The projects on this site are my own, done in my own time. They&rsquo;re mostly robotics and motor control, which is the same problem from the other end: making something physical behave predictably.</p>
-  </div>
-</section>
+    <p class="secnum">Gallery</p>
 
-<!-- EDIT: section "Education" -->
-<section class="about reveal">
-  <div class="wrap">
-    <p class="secnum">Education</p>
-    <h2>Education</h2>
-    <!-- Logos: drop the files in Images/ and replace each
-         <div class="slot">...</div> with an <img>, for example
-         <img src="Images/logo-uon.png" alt="University of Nottingham">
-         PNG or SVG with a transparent background works best. -->
-    <!-- EDIT: affiliation logos and names -->
-<div class="affil">
-      <div class="affil-item">
-        <div class="affil-logo"><div class="slot">Images/logo-uon.png</div></div>
-        <div>
-          <span class="affil-name">University of Nottingham</span>
-          <span class="affil-note">BEng Mechanical Engineering, First Class</span>
-        </div>
-      </div>
-      <div class="affil-item">
-        <div class="affil-logo"><div class="slot">Images/logo-mercedes.png</div></div>
-        <div>
-          <span class="affil-name">Mercedes AMG High Performance Powertrains</span>
-          <span class="affil-note">Placement year</span>
-        </div>
-      </div>
+    <!-- Drop files in Images/ or Video/ and swap them in:
+         Photo: <figure><img src="Images/NAME.jpg" alt="DESCRIPTION"><figcaption>Caption</figcaption></figure>
+         Clip:  <figure><video src="Video/NAME.mp4" controls muted playsinline></video><figcaption>Caption</figcaption></figure>
+         Full width: add class="wide" to the <figure>. -->
+
+    <!-- EDIT: gallery. Each figure is one image and its caption -->
+<div class="gallery">
+      <figure class="wide">
+        <div class="slot">Hero image &mdash; Images/biomimetic-01.jpg</div>
+        <figcaption>Caption to be written.</figcaption>
+      </figure>
+      <figure>
+        <div class="slot">Images/biomimetic-02.jpg</div>
+        <figcaption>Caption to be written.</figcaption>
+      </figure>
+      <figure>
+        <div class="slot">Images/biomimetic-03.jpg</div>
+        <figcaption>Caption to be written.</figcaption>
+      </figure>
+      <figure>
+        <div class="slot">Images/biomimetic-04.jpg</div>
+        <figcaption>Caption to be written.</figcaption>
+      </figure>
+      <figure>
+        <div class="slot">Images/biomimetic-05.jpg</div>
+        <figcaption>Caption to be written.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- EDIT: section "Awards" -->
-<section class="about reveal">
+<!-- EDIT: section "section" -->
+<section id="status" class="prose reveal">
   <div class="wrap">
-    <p class="secnum">Awards</p>
-    <h2>Awards</h2>
-    <ul class="links-list">
-      <li><strong>IMechE Award for Best Group Design and Manufacture Project</strong>, 2019 &mdash; for the <a href="biomimetic-propulsion.html">biomimetic propulsion system</a>.</li>
-      <li><strong>Bob Hall Award for Innovation, Teamwork and Entrepreneurship</strong>, 2020.</li>
+    <p class="secnum">Status</p>
+    <p>Completed as a final-year group project. Full write-up to be added &mdash; the design rationale, what was manufactured and how it tested.</p>
+    <ul class="links-list" style="margin-top:14px">
+      <li>Report or drawings &mdash; link to be added</li>
     </ul>
   </div>
 </section>
@@ -133,12 +138,13 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
     <!-- EDIT: footer links -->
 <div class="footlinks">
       <a href="index.html">home</a>
+      <a href="about.html">about</a>
       <a href="mailto:fraserkearsey@gmail.com">email</a>
       <a href="https://github.com/fraserky">github</a>
       <a href="https://linkedin.com/in/fraserkearsey">linkedin</a>
       <a href="https://huggingface.co/fkearsey">hugging face</a>
     </div>
-    <p class="copyright">&copy; 2026 Fraser Kearsey &nbsp;&middot;&nbsp; DOC: FK-ABOUT &nbsp;&middot;&nbsp; REV 2026-08</p>
+    <p class="copyright">&copy; 2026 Fraser Kearsey &nbsp;&middot;&nbsp; DOC: FK-BIOMIMETIC &nbsp;&middot;&nbsp; REV 2026-08</p>
   </div>
 </footer>
 

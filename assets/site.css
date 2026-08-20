@@ -71,6 +71,8 @@ a{color:var(--ink);text-decoration:none}
 a:hover{color:var(--accent)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .wrap{max-width:780px;margin:0 auto;padding:0 24px}
+/* used on the home page so the project rail can show more cards */
+.wrap.wide{max-width:1120px}
 
 /* ---------- nav ---------- */
 nav{
@@ -81,7 +83,7 @@ nav{
   border-bottom:1px solid var(--line);
 }
 @supports not (backdrop-filter: blur(1px)){ nav{background:var(--paper)} }
-nav .wrap{max-width:1000px;display:flex;justify-content:space-between;align-items:center;height:62px;gap:16px}
+nav .wrap{max-width:1120px;display:flex;justify-content:space-between;align-items:center;height:62px;gap:16px}
 .brand{white-space:nowrap;font-weight:700;font-size:.98rem;letter-spacing:-.015em;color:var(--ink)}
 .brand:hover{color:var(--accent)}
 .docref{font-family:var(--mono);font-size:.7rem;color:var(--grey);letter-spacing:.02em}
@@ -235,7 +237,7 @@ figure.media.short{max-width:340px;margin-left:auto;margin-right:auto}
 .track::-webkit-scrollbar-thumb{background:var(--line);border-radius:var(--r-pill)}
 .track::-webkit-scrollbar-track{background:transparent}
 .card{
-  flex:0 0 300px;scroll-snap-align:start;
+  flex:0 0 296px;scroll-snap-align:start;
   display:flex;flex-direction:column;
   background:var(--surface);
   border:1px solid var(--line);
@@ -318,4 +320,35 @@ footer{padding:40px 0 56px;border-top:1px solid var(--line-soft)}
   .navlinks > a,.dropdown summary{padding:5px 8px}
   .themetoggle{width:30px;height:30px}
   .themetoggle svg{width:15px;height:15px}
+}
+
+/* ---------- affiliations (logo + institution) ---------- */
+.affil{display:flex;flex-direction:column;gap:14px;margin:20px 0 0}
+.affil-item{
+  display:flex;align-items:center;gap:16px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  box-shadow:var(--shadow-sm);
+  padding:14px 18px;
+}
+/* logos are usually dark-on-transparent, so they sit on a light chip in both themes */
+.affil-logo{
+  flex:0 0 auto;width:64px;height:48px;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);
+  overflow:hidden;
+}
+.affil-logo img{max-width:52px;max-height:38px;width:auto;height:auto;object-fit:contain;display:block}
+.affil-logo .slot{
+  width:100%;height:100%;border:none;border-radius:0;background:transparent;
+  color:var(--grey);font-size:.52rem;padding:4px;line-height:1.3;
+}
+.affil-name{display:block;font-weight:600;font-size:.98rem;letter-spacing:-.01em}
+.affil-note{display:block;font-size:.86rem;color:var(--soft);line-height:1.5}
+.affil-note .yr{font-family:var(--mono);font-size:.74rem;color:var(--grey)}
+@media (max-width:460px){
+  .affil-item{gap:12px;padding:12px 14px}
+  .affil-logo{width:52px;height:40px}
+  .affil-logo img{max-width:42px;max-height:32px}
 }

@@ -15,6 +15,31 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 </head>
 <body>
 
+<!--
+  ============================================================================
+  EDITING THIS PAGE
+
+  Text lives between tags. To change a paragraph, edit what is between
+  the <p> and </p> tags and leave the tags alone:
+
+      <p>old wording</p>      becomes      <p>new wording</p>
+
+  Editable blocks are flagged by comments starting with "EDIT:" further
+  down this file. Search the file for  EDIT:  to jump between them.
+
+  Leave alone:
+    * everything inside the head element
+    * class="..." attributes
+    * entities such as &mdash; &rsquo; &hellip;  which are punctuation: - ' ...
+
+  Special characters: type &amp; for an ampersand, &lt; for a less-than sign,
+  and &rsquo; for an apostrophe, as in don&rsquo;t.
+
+  The styling lives in assets/site.css. Change the colours, corner radii or
+  shadows in the :root block at the top of that file and every page follows.
+  ============================================================================
+-->
+
 <nav>
   <div class="wrap">
     <a class="brand" href="index.html">Fraser Kearsey</a>
@@ -25,6 +50,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
           <a href="so101.html"><span class="idx">01</span>SO-101 imitation learning</a>
           <a href="jetson-nano.html" aria-current="page"><span class="idx">02</span>Jetson Nano robot</a>
           <a href="esp32-foc.html"><span class="idx">03</span>ESP32 field-oriented control</a>
+          <a href="biomimetic-propulsion.html"><span class="idx">04</span>Biomimetic propulsion system</a>
         </div>
       </details>
       <a href="about.html">about</a>
@@ -35,6 +61,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
   <div class="progress" aria-hidden="true"></div>
 </nav>
 
+<!-- EDIT: page title and intro paragraphs -->
 <header class="intro sub">
   <div class="wrap">
     <p class="crumb"><a href="index.html">&larr; Home</a> &nbsp;/&nbsp; 02 &nbsp;Jetson Nano</p>
@@ -43,7 +70,8 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
       <p>Write-up to be written &mdash; one or two sentences on what the robot is, what it does and where it got to.</p>
     </div>
 
-    <div class="datastrip">
+    <!-- EDIT: spec strip. Each cell is one div: .k is the label, .v the value -->
+<div class="datastrip">
       <div><span class="k">Compute</span><span class="v">Jetson Nano 4GB</span></div>
       <div><span class="k">Chassis</span><span class="v">TBC</span></div>
       <div><span class="k">Sensing</span><span class="v">TBC</span></div>
@@ -54,6 +82,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 
 <main>
 
+<!-- EDIT: section "section" -->
 <section id="gallery" class="reveal">
   <div class="wrap">
     <p class="secnum">Gallery</p>
@@ -63,7 +92,8 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
          Clip:  <figure><video src="Video/NAME.mp4" controls muted playsinline></video><figcaption>Caption</figcaption></figure>
          Full width: add class="wide" to the <figure>. -->
 
-    <div class="gallery">
+    <!-- EDIT: gallery. Each figure is one image and its caption -->
+<div class="gallery">
       <figure class="wide">
         <div class="slot">Hero image &mdash; Images/jetson-01.jpg</div>
         <figcaption>Caption to be written.</figcaption>
@@ -88,6 +118,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
   </div>
 </section>
 
+<!-- EDIT: section "section" -->
 <section id="status" class="prose reveal">
   <div class="wrap">
     <p class="secnum">Status</p>
@@ -103,7 +134,8 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 <footer id="contact" class="reveal">
   <div class="wrap">
     <p class="secnum">Contact</p>
-    <div class="footlinks">
+    <!-- EDIT: footer links -->
+<div class="footlinks">
       <a href="index.html">home</a>
       <a href="about.html">about</a>
       <a href="mailto:fraserkearsey@gmail.com">email</a>

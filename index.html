@@ -15,6 +15,31 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 </head>
 <body>
 
+<!--
+  ============================================================================
+  EDITING THIS PAGE
+
+  Text lives between tags. To change a paragraph, edit what is between
+  the <p> and </p> tags and leave the tags alone:
+
+      <p>old wording</p>      becomes      <p>new wording</p>
+
+  Editable blocks are flagged by comments starting with "EDIT:" further
+  down this file. Search the file for  EDIT:  to jump between them.
+
+  Leave alone:
+    * everything inside the head element
+    * class="..." attributes
+    * entities such as &mdash; &rsquo; &hellip;  which are punctuation: - ' ...
+
+  Special characters: type &amp; for an ampersand, &lt; for a less-than sign,
+  and &rsquo; for an apostrophe, as in don&rsquo;t.
+
+  The styling lives in assets/site.css. Change the colours, corner radii or
+  shadows in the :root block at the top of that file and every page follows.
+  ============================================================================
+-->
+
 <nav>
   <div class="wrap">
     <a class="brand" href="index.html">Fraser Kearsey</a>
@@ -25,6 +50,7 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
           <a href="so101.html"><span class="idx">01</span>SO-101 imitation learning</a>
           <a href="jetson-nano.html"><span class="idx">02</span>Jetson Nano robot</a>
           <a href="esp32-foc.html"><span class="idx">03</span>ESP32 field-oriented control</a>
+          <a href="biomimetic-propulsion.html"><span class="idx">04</span>Biomimetic propulsion system</a>
         </div>
       </details>
       <a href="about.html">about</a>
@@ -35,8 +61,9 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
   <div class="progress" aria-hidden="true"></div>
 </nav>
 
+<!-- EDIT: page title and intro paragraphs -->
 <header class="intro">
-  <div class="wrap">
+  <div class="wrap wide">
     <h1>Fraser Kearsey</h1>
     <div class="lede">
       <p>Software and controls engineer. Production embedded software for automotive control systems by trade; robotics, motor control and machine learning in my own time.</p>
@@ -47,8 +74,9 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 
 <main>
 
+<!-- EDIT: section "Projects" -->
 <section id="work" class="reveal">
-  <div class="wrap">
+  <div class="wrap wide">
     <p class="secnum">Work</p>
     <h2>Projects</h2>
 
@@ -59,7 +87,8 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
       </div>
       <!-- Add a project: copy one <a class="card"> block. Swap the .slot div for
            <img src="Images/NAME.jpg" alt="DESCRIPTION"> once you have a photo. -->
-      <div class="track" tabindex="0" role="region" aria-label="Projects, scroll horizontally">
+      <!-- EDIT: project cards. Copy a whole a.card block to add one -->
+<div class="track" tabindex="0" role="region" aria-label="Projects, scroll horizontally">
         <a class="card" href="so101.html">
           <div class="card-media"><img src="Images/so101-card.jpg" alt="A green 3D-printed SO-101 arm placing a cube into a cardboard box"></div>
           <div class="card-body">
@@ -87,6 +116,15 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
             <span class="card-meta"><span class="tag">ESP32</span><span class="tag">ESP-IDF</span><span class="tag">MCPWM</span><span class="tag">C</span></span>
           </div>
         </a>
+        <a class="card" href="biomimetic-propulsion.html">
+          <div class="card-media"><div class="slot">Images/biomimetic-card.jpg</div></div>
+          <div class="card-body">
+            <span class="card-num">04</span>
+            <span class="card-title">Biomimetic propulsion system<span class="badge">2019&ndash;20</span></span>
+            <span class="card-desc">University group design and manufacture project. Winner of the IMechE Award for Best Group Design and Manufacture Project.</span>
+            <span class="card-meta"><span class="tag">Mechanical design</span><span class="tag">Manufacture</span><span class="tag">Group project</span></span>
+          </div>
+        </a>
       </div>
     </div>
   </div>
@@ -97,7 +135,8 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&'Intersection
 <footer id="contact" class="reveal">
   <div class="wrap">
     <p class="secnum">Contact</p>
-    <div class="footlinks">
+    <!-- EDIT: footer links -->
+<div class="footlinks">
       <a href="about.html">about</a>
       <a href="mailto:fraserkearsey@gmail.com">email</a>
       <a href="https://github.com/fraserky">github</a>
